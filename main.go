@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"example.com/config"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -36,6 +37,12 @@ func main() {
 	defer driver.Close(ctx)
 
 	r := gin.Default()
+	r.Use(cors.Default())
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
 
 	r.POST("/path", GetShortestPath)
 
